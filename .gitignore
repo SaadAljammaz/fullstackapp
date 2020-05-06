@@ -510,3 +510,4 @@ MigrationBackup/
 
 # End of https://www.gitignore.io/api/flask,python,visualstudio
 .DS_Store
+.vscode/settings.json
