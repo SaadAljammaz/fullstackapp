@@ -10,7 +10,7 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 import logging
 from logging import Formatter, FileHandler
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from forms import *
 from flask_migrate import Migrate
 from datetime import datetime
@@ -253,11 +253,31 @@ def create_venue_form():
 
 @app.route('/venues/create', methods=['POST'])
 def create_venue_submission():
-  # TODO: insert form data as a new Venue record in the db, instead
-  # TODO: modify data to be the data object returned from db insertion
+  # TODO: insert form data as a new Venue record in the db, instead | Done
+  # TODO: modify data to be the data object returned from db insertion | Done
+  try:
+    v = Venue()
+    v.name = request.form['name']
+    v.city = request.form['city']
+    v.state = request.form['state']
+    v.address = request.form['address']
+    v.phone = request.form['phone']
+    v.genres = request.form['genres']
+    print(request.form['facebook_link'])
+    v.facebook_link = request.form['facebook_link']
 
+    db.session.add(v)
+    db.session.commit()
+    flash('Venue ' + request.form['name'] + ' was successfully listed!')
+
+  except:
+    db.session.rollback()
+
+    flash('An error occurred. Venue ' + request.form['name'] + ' could not be listed.')  
+  finally:
+    db.session.close()
   # on successful db insert, flash success
-  flash('Venue ' + request.form['name'] + ' was successfully listed!')
+  # flash('Venue ' + request.form['name'] + ' was successfully listed!')
   # TODO: on unsuccessful db insert, flash an error instead.
   # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
   # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
