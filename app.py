@@ -174,19 +174,6 @@ def show_venue(venue_id):
   # shows the venue page with the given venue_id
   # TODO: replace with real venue data from the venues table, using venue_id
   v = Venue.query.filter_by(id=venue_id).first()
-  def upcoming_shows():
-    upcoming = []
-
-    # if show is in future, add show details to upcoming
-    for show in shows:
-      if show.start_time > datetime.now():
-        upcoming.append({
-            "artist_id": show.artist_id,
-            "artist_name": Artist.query.filter_by(id=show.artist_id).first().name,
-            "artist_image_link": Artist.query.filter_by(id=show.artist_id).first().image_link,
-            "start_time": format_datetime(str(show.start_time))
-        })
-    return upcoming
   if v:
     data = {
       "id": v.id,
